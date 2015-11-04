@@ -1,0 +1,175 @@
+ 
+Oct 06, 2015 8:43:24 PM org.springframework.context.support.AbstractApplicationContext prepareRefresh
+INFO: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@26b72884: startup date [Tue Oct 06 20:43:24 PDT 2015]; root of context hierarchy
+Oct 06, 2015 8:43:24 PM org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+INFO: Loading XML bean definitions from class path resource [spring.xml]
+Test Case A
+Bob trying to access Alice's Secret without it being shared. We get an Exception.
+-------------------------------------------------------------------------------
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : storeSecret
+Alice creates a secret with ID e2c8af25-8a20-44d2-acc8-17347f6c1966
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : readSecret
+ parameters [Ljava.lang.Object;@149e8424
+<< Bob is trying to access e2c8af25-8a20-44d2-acc8-17347f6c1966 >>
+Throw Exception : Not Authorized for Bob to read e2c8af25-8a20-44d2-acc8-17347f6c1966
+Oct 06, 2015 8:43:26 PM org.springframework.context.support.AbstractApplicationContext prepareRefresh
+INFO: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@6f1c5be4: startup date [Tue Oct 06 20:43:26 PDT 2015]; root of context hierarchy
+Oct 06, 2015 8:43:26 PM org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+INFO: Loading XML bean definitions from class path resource [spring.xml]
+Test Case B
+Bob trying to access Alice's Secret after it being shared. Bob can read this secret.
+--------------------------------------------------------------------------------
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : storeSecret
+Alice creates a secret with ID 0a9912cf-2047-48be-afa5-4a02e59bde80
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : shareSecret
+Alice shares the secret of ID 0a9912cf-2047-48be-afa5-4a02e59bde80 with Bob
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : readSecret
+ parameters [Ljava.lang.Object;@5034ce92
+<< Bob is trying to access 0a9912cf-2047-48be-afa5-4a02e59bde80 >>
+Valid User :Bob has access to read 0a9912cf-2047-48be-afa5-4a02e59bde80
+Bob reads the secret of ID 0a9912cf-2047-48be-afa5-4a02e59bde80
+Test Completed with no exception!
+--------------------------------------------------------------------------------
+Oct 06, 2015 8:43:26 PM org.springframework.context.support.AbstractApplicationContext prepareRefresh
+INFO: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@3ae5fc61: startup date [Tue Oct 06 20:43:26 PDT 2015]; root of context hierarchy
+Oct 06, 2015 8:43:26 PM org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+INFO: Loading XML bean definitions from class path resource [spring.xml]
+Test Case C
+Alice shares her secret with Bob. Bob shares Alice's secret with Carl. Carl can read it
+-----------------------------------------------------------------------------------
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : storeSecret
+Alice creates a secret with ID b1919a29-11e3-4898-ae6b-ef59847c56ae
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : shareSecret
+Alice shares the secret of ID b1919a29-11e3-4898-ae6b-ef59847c56ae with Bob
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : shareSecret
+Bob shares the secret of ID b1919a29-11e3-4898-ae6b-ef59847c56ae with Carl
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : readSecret
+ parameters [Ljava.lang.Object;@3b7418ba
+<< Carl is trying to access b1919a29-11e3-4898-ae6b-ef59847c56ae >>
+Valid User :Carl has access to read b1919a29-11e3-4898-ae6b-ef59847c56ae
+Carl reads the secret of ID b1919a29-11e3-4898-ae6b-ef59847c56ae
+Test Completed with no exception!
+-----------------------------------------------------------------------------------
+Oct 06, 2015 8:43:26 PM org.springframework.context.support.AbstractApplicationContext prepareRefresh
+INFO: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@430379d4: startup date [Tue Oct 06 20:43:26 PDT 2015]; root of context hierarchy
+Oct 06, 2015 8:43:26 PM org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+INFO: Loading XML bean definitions from class path resource [spring.xml]
+Test Case D
+Alice shares her secret with Bob. Bob shares Carl's secret with Alice. We get an Exception!
+---------------------------------------------------------------------------------------
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : storeSecret
+Alice creates a secret with ID 3a3b4368-1318-4aa0-8c67-9279c6b2219d
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : shareSecret
+Alice shares the secret of ID 3a3b4368-1318-4aa0-8c67-9279c6b2219d with Bob
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : storeSecret
+Carl creates a secret with ID becc40cf-5bf5-4549-8091-b6824e25a5fb
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : shareSecret
+Throw Exception : Not authorised for Bob to share becc40cf-5bf5-4549-8091-b6824e25a5fb with Alice
+Oct 06, 2015 8:43:27 PM org.springframework.context.support.AbstractApplicationContext prepareRefresh
+INFO: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@54c4e0d3: startup date [Tue Oct 06 20:43:27 PDT 2015]; root of context hierarchy
+Oct 06, 2015 8:43:27 PM org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+INFO: Loading XML bean definitions from class path resource [spring.xml]
+Test Case E
+Alice shares her secret with Bob. Bob shares Alice's secret with Carl. Alice unshares her secret with Carl. Carl can't read this secret!
+--------------------------------------------------------------------------------------------------------------------------------
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : storeSecret
+Alice creates a secret with ID 48ff4d04-0783-45b4-84d9-8394d8795446
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : shareSecret
+Alice shares the secret of ID 48ff4d04-0783-45b4-84d9-8394d8795446 with Bob
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : shareSecret
+Bob shares the secret of ID 48ff4d04-0783-45b4-84d9-8394d8795446 with Carl
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : unshareSecret
+Alice unshares the secret of ID 48ff4d04-0783-45b4-84d9-8394d8795446 with Carl
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : readSecret
+ parameters [Ljava.lang.Object;@2cb2d899
+<< Carl is trying to access 48ff4d04-0783-45b4-84d9-8394d8795446 >>
+Throw Exception : Not Authorized for Carl to read 48ff4d04-0783-45b4-84d9-8394d8795446
+Oct 06, 2015 8:43:27 PM org.springframework.context.support.AbstractApplicationContext prepareRefresh
+INFO: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@11aa3bbc: startup date [Tue Oct 06 20:43:27 PDT 2015]; root of context hierarchy
+Oct 06, 2015 8:43:27 PM org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+INFO: Loading XML bean definitions from class path resource [spring.xml]
+Test Case F
+Alice shares her secret with Bob. Alice shared her secret with Carl. Carl shares Alice's secret with Bob. Alice unshares her secret with Bob. Bob can't read this secret!
+---------------------------------------------------------------------------------------------------------------------------------------------------------------
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : storeSecret
+Alice creates a secret with ID 61a64765-ea83-4d9b-b8db-94be8e602399
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : shareSecret
+Alice shares the secret of ID 61a64765-ea83-4d9b-b8db-94be8e602399 with Bob
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : shareSecret
+Alice shares the secret of ID 61a64765-ea83-4d9b-b8db-94be8e602399 with Carl
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : shareSecret
+Carl shares the secret of ID 61a64765-ea83-4d9b-b8db-94be8e602399 with Bob
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : unshareSecret
+Alice unshares the secret of ID 61a64765-ea83-4d9b-b8db-94be8e602399 with Bob
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : readSecret
+ parameters [Ljava.lang.Object;@72f8a19f
+<< Bob is trying to access 61a64765-ea83-4d9b-b8db-94be8e602399 >>
+Throw Exception : Not Authorized for Bob to read 61a64765-ea83-4d9b-b8db-94be8e602399
+Oct 06, 2015 8:43:27 PM org.springframework.context.support.AbstractApplicationContext prepareRefresh
+INFO: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@213b08b1: startup date [Tue Oct 06 20:43:27 PDT 2015]; root of context hierarchy
+Oct 06, 2015 8:43:27 PM org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+INFO: Loading XML bean definitions from class path resource [spring.xml]
+Test Case G
+Alice shares her secret with Bob. Bob shares Alice's secret with Carl. Alice unshares her secret with Bob. Bob shares Alice's secret with Carl again. We get an exception. But Carl can still read this secret.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : storeSecret
+Alice creates a secret with ID 0c9f9b93-5a23-4607-8332-b57acb0ed08d
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : shareSecret
+Alice shares the secret of ID 0c9f9b93-5a23-4607-8332-b57acb0ed08d with Bob
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : shareSecret
+Bob shares the secret of ID 0c9f9b93-5a23-4607-8332-b57acb0ed08d with Carl
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : unshareSecret
+Throw Exception :Bob hasn't shared 0c9f9b93-5a23-4607-8332-b57acb0ed08d
+Oct 06, 2015 8:43:27 PM org.springframework.context.support.AbstractApplicationContext prepareRefresh
+INFO: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@2ea54d32: startup date [Tue Oct 06 20:43:27 PDT 2015]; root of context hierarchy
+Oct 06, 2015 8:43:27 PM org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+INFO: Loading XML bean definitions from class path resource [spring.xml]
+Test Case H
+Alice shares secret with Bob. Carl tries to unshare with Bob. We get an exception
+----------------------------------------------------------------------------------
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : storeSecret
+Alice creates a secret with ID edaf5d0f-a1f6-44ec-bae0-0f2596f5a724
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : shareSecret
+Alice shares the secret of ID edaf5d0f-a1f6-44ec-bae0-0f2596f5a724 with Bob
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : unshareSecret
+Throw Exception :Carl hasn't shared edaf5d0f-a1f6-44ec-bae0-0f2596f5a724
+Oct 06, 2015 8:43:27 PM org.springframework.context.support.AbstractApplicationContext prepareRefresh
+INFO: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@5ebd50b9: startup date [Tue Oct 06 20:43:27 PDT 2015]; root of context hierarchy
+Oct 06, 2015 8:43:27 PM org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+INFO: Loading XML bean definitions from class path resource [spring.xml]
+Test Case I
+Alice shares secret with Bob.Bob shares it with Carl. Alice unshares it with Bob.Bob shares it with Carl with again. We get an exception
+----------------------------------------------------------------------------------
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : storeSecret
+Alice creates a secret with ID 2a842f10-2259-40d9-bf6d-d917102c97b4
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : shareSecret
+Alice shares the secret of ID 2a842f10-2259-40d9-bf6d-d917102c97b4 with Bob
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : unshareSecret
+Throw Exception :Bob hasn't shared 2a842f10-2259-40d9-bf6d-d917102c97b4
+Oct 06, 2015 8:43:27 PM org.springframework.context.support.AbstractApplicationContext prepareRefresh
+INFO: Refreshing org.springframework.context.support.ClassPathXmlApplicationContext@c6c2bc3: startup date [Tue Oct 06 20:43:27 PDT 2015]; root of context hierarchy
+Oct 06, 2015 8:43:27 PM org.springframework.beans.factory.xml.XmlBeanDefinitionReader loadBeanDefinitions
+INFO: Loading XML bean definitions from class path resource [spring.xml]
+Test Case H
+Alice stores the same secrete object twice, and get two different UUIDs
+----------------------------------------------------------------------------------
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : storeSecret
+Alice creates a secret with ID 5adba715-a9d6-484d-8e3a-775fb93f971c
+<<<<<AspectJ>>>>> DoBefore() is running. It intercepted : storeSecret
+Alice creates a secret with ID e80c1dfd-b541-4b9b-8c3c-85a488c64f2a
+Test Completed with no exception!
+----------------------------------------------------------------------------------
+
+testA: pass
+testB: pass
+testC: pass
+testD: pass
+testE: pass
+testF: pass
+testG: pass
+testH: pass
+testI: pass
+testJ: pass
+
+
+
